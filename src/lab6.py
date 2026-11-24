@@ -1,37 +1,39 @@
-"""
-Основна програма для Лабораторної роботи № 6.
+"""Головний модуль лабораторної роботи № 6 (Варіант 9: random_generator)."""
 
-Цей скрипт повинен імпортувати та використовувати створений вами пакет,
-щонайменше один модуль зі стандартної бібліотеки Python,
-та щонайменше один сторонній пакет.
-"""
-
-# Приклад імпорту зі стандартної бібліотеки
 import math
+from rich.console import Console
+from rich.table import Table
 
-# Приклад імпорту стороннього пакета
-import requests
-
-# TODO: Імпортуйте функції зі створеного вами пакета.
-# from назва_вашого_пакета.назва_модуля import ваша_функція
+from .random_generator import random_choice, random_float, random_integer
 
 
-def main():
-    """Основна функція для демонстрації використання модулів та пакетів."""
-    # Приклад використання модуля стандартної бібліотеки
-    print(f"Квадратний корінь з 16: {math.sqrt(16)}")
+def run_demo() -> None:
+    """Демонструє роботу пакета random_generator, модуля math та пакета rich."""
+    console = Console()
 
-    # Приклад використання стороннього пакета
-    try:
-        response = requests.get("https://api.github.com", timeout=10)
-        response.raise_for_status()  # Викликати виняток для невдалих статус-кодів
-        print("Успішно підключено до GitHub API.")
-    except requests.exceptions.RequestException as e:
-        print(f"Не вдалося підключитися до GitHub API: {e}")
+    # Використання власного пакета random_generator
+    rand_int = random_integer(1, 100)
+    rand_flt = random_float(1.0, 25.0, decimals=3)
+    variants = ["Python", "C#", "C++", "Git", "UnitTest"]
+    picked_item = random_choice(variants)
 
-    # TODO: Додайте виклики ваших власних функцій з вашого пакета.
-    # print(f"Результат моєї функції: {ваша_функція(якісь_вхідні_дані)}")
+    # Використання модуля стандартної бібліотеки math
+    sqrt_of_float = math.sqrt(rand_flt)
+    ceil_of_float = math.ceil(rand_flt)
+
+    # Використання стороннього пакета rich
+    table = Table(title="Результати роботи пакета random_generator (Варіант 9)")
+    table.add_column("Функція / Джерело", style="cyan")
+    table.add_column("Отримане значення", style="green")
+
+    table.add_row("random_integer(1, 100)", str(rand_int))
+    table.add_row("random_float(1.0, 25.0, decimals=3)", str(rand_flt))
+    table.add_row("random_choice(variants)", str(picked_item))
+    table.add_row("math.sqrt(rand_flt)", f"{sqrt_of_float:.4f}")
+    table.add_row("math.ceil(rand_flt)", str(ceil_of_float))
+
+    console.print(table)
 
 
 if __name__ == "__main__":
-    main()
+    run_demo()
